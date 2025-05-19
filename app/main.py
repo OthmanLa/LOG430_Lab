@@ -6,7 +6,7 @@ executed as a script.
 """
 
 def hello() -> str:
-    """Return the greeting message."""
+    """Return greeting message."""
     return "Hello, World!"
 
 
