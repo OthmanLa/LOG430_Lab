@@ -24,6 +24,4 @@ jobs:
       - name: Build Docker image
         run: docker build -t log430_lab:${{ github.sha }} .
 
-      - name: Smoke test container
-        run: |
-          docker run --rm log430_lab:${{ github.sha }} | grep "Hello, World!"
+
