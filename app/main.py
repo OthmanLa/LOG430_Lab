@@ -7,7 +7,7 @@ executed as a script.
 
 def hello() -> str:
     """Return the greeting message."""
-    return 
+    return "Hello, World!"
 
 
 if __name__ == "__main__":
