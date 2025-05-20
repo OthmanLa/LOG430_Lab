@@ -22,6 +22,7 @@
       → Hello, World!
      docker compose down
    Ps: le docker-compose.yml pointe déjà vers othman157/log430_lab:latest. Un simple docker compose up -d suffit.
+   docker run --rm othman157/log430_lab:latest
 
 4. Pipeline CI/CD
    <img width="650" alt="image" src="https://github.com/user-attachments/assets/a7a09d88-9e7a-4796-b80b-6fce2f9c48c6" />
