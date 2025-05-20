@@ -25,6 +25,7 @@
    docker run --rm othman157/log430_lab:latest
 
 4. Pipeline CI/CD
+   
    <img width="650" alt="image" src="https://github.com/user-attachments/assets/d648a4de-3326-4e2d-9c38-840e87db22e7" />
    <img width="647" alt="image" src="https://github.com/user-attachments/assets/69dd34fd-ea16-4ca3-badd-10fcdc351110" />
 
