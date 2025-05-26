@@ -27,7 +27,6 @@
         Rechercher un produit
         Enregistrer une vente
 
-Voir le stock
      docker compose down
    Ps: le docker-compose.yml pointe déjà vers othman157/log430_lab:latest. Un simple docker compose up -d suffit.
    docker run --rm othman157/log430_lab:latest
