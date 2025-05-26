@@ -10,24 +10,9 @@ def hello() -> str:
     return "Hello, World!"
 
 
-if __name__ == "__main__":
-    # Display the message when the file is run directly
-    print(hello())
-
 from app.db.init_db import init_db
 from app.controllers.produit_controller import ajouter_produit, rechercher_produit
 from app.controllers.vente_controller import enregistrer_vente
-
-
-if __name__ == "__main__":
-    init_db()
-
-    # print("test...")
-    # ajouter_produit("Stylo", 1.99, 100)
-
-    # print("'stylo'...")
-    # rechercher_produit("stylo")
-
 
 
 def afficher_menu():
@@ -63,5 +48,10 @@ def menu():
         else:
             print("Choix invalide. Veuillez réessayer.")
 
+
 if __name__ == "__main__":
+    # Display Hello World
+    print(hello())
+
+    # Lancer le menu
     menu()

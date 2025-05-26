@@ -2,6 +2,9 @@ version: "3.8"
 
 services:
   app:
-    image: othman157/log430_lab:latest     
+    build: .
     container_name: log430_lab_app
-    restart: "no"                         
+    stdin_open: true      # ← autorise l'entrée console
+    tty: true             # ← garde le conteneur ouvert
+    volumes:
+      - .:/code
