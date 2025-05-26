@@ -1,0 +1,11 @@
+	## Décision
+	Le système utilisera une base de données relationnelle SQLite, accédée via SQLAlchemy.
+	
+	## Justification
+	- SQLite est léger, intégré à Python, et ne nécessite aucun serveur ou installation externe.
+	- SQLAlchemy permet de découvrir l'abstraction de persistance avec un ORM, tout en gardant un bon contrôle sur la base.
+	- Cela me permet de découvrir à la fois SQLite et SQLAlchemy, ce qui enrichit mon bagage technique tout en facilitant l'implémentation.
+	
+	## Conséquences
+	- La base sera un simple fichier .db, monté dans un volume Docker si nécessaire.
+    - Le système reste local, simple et autonome.
