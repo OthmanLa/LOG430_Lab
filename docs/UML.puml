@@ -1,0 +1,26 @@
+Vue logique:
+@startuml
+
+class Produit {
+  - id : int
+  - name : string
+  - price : float
+  - quantity : int
+}
+
+class Vente {
+  - id : int
+  - date : datetime
+  - total : float
+  + calculateTotal() : float
+}
+
+class LigneVente {
+  - quantity: int
+  - subtotal : float
+}
+
+Produit "1" <-- "1..*" LigneVente 
+LigneVente "1..*" --> "1" Vente 
+
+@enduml
