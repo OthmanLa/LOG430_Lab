@@ -1,6 +1,6 @@
 Vue logique:
 
-  ![alt text](image.png)
+<img width="162" alt="image" src="https://github.com/user-attachments/assets/a076140c-06e5-4a05-baee-7420861ef4da" />
 
 Vue des processus:
 
