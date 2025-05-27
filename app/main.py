@@ -74,3 +74,11 @@ if __name__ == "__main__":
         except ValueError:
             print("Entrée invalide.")
     menu(caisse_id)
+
+def hello() -> str:
+    """Return the greeting message"""
+    return "Hello, World!"
+
+if __name__ == "__main__":
+    #Display the message
+    print(hello())
