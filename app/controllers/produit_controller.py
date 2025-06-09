@@ -65,3 +65,32 @@ def modifier_produit():
         print(" Erreur lors de la modification :", e)
     finally:
         session.close()
+
+def ajouter_produit_centre():
+    session = SessionLocal()
+    try:
+        nom = input("Nom du produit : ")
+        prix = float(input("Prix : "))
+
+        existant = session.query(Produit).filter(Produit.nom.ilike(nom)).first()
+        if existant:
+            print(" Ce produit existe déjà.")
+            return
+
+        produit = Produit(nom=nom, prix=prix)
+        session.add(produit)
+        session.commit() 
+
+        quantite = int(input("Quantité initiale à stocker au Centre Logistique : "))
+        centre_id = 6  
+
+        stock = Stock(magasin_id=centre_id, produit_id=produit.id, quantite=quantite)
+        session.add(stock)
+        session.commit()
+
+        print(f"Produit '{nom}' ajouté avec succès au Centre Logistique.")
+    except Exception as e:
+        session.rollback()
+        print(" Erreur :", e)
+    finally:
+        session.close()

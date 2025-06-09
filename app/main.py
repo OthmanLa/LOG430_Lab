@@ -66,7 +66,7 @@ def menu_caisse(caisse_id, magasin_id):
 
         elif choix == "9":
             print("Merci, à bientôt !")
-            break
+            return False
 
         else:
             print("Choix invalide.")
@@ -77,7 +77,8 @@ def menu_maison_mere():
         print("1. Générer un rapport consolidé")
         print("2. Voir le tableau de bord")
         print("3. Modifier un produit")
-        print("4. Quitter")
+        print("4. Ajouter un nouveau produit au Centre Logistique")
+        print("5. Quitter")
 
         choix = input("Votre choix : ").strip()
 
@@ -92,10 +93,14 @@ def menu_maison_mere():
         elif choix == "3":
             from app.controllers.produit_controller import modifier_produit
             modifier_produit()
-
+        
         elif choix == "4":
+            from app.controllers.produit_controller import ajouter_produit_centre
+            ajouter_produit_centre()
+
+        elif choix == "5":
             print("Déconnexion de la maison mère.")
-            break
+            return False
 
         else:
             print("Choix invalide.")
@@ -107,19 +112,21 @@ def menu():
         try:
             caisse_id = int(input("Sur quelle caisse souhaitez-vous travailler ? (1 à 3) ou 0 pour Maison Mère : "))
             if caisse_id == 0:
-                menu_maison_mere()
-                break
+                if menu_maison_mere() == False:
+                    break
             elif caisse_id in [1, 2, 3]:
                 magasin_id = int(input("Dans quel magasin êtes-vous ? (1 à 5) : "))
                 if magasin_id in [1, 2, 3, 4, 5]:
-                    menu_caisse(caisse_id, magasin_id)
-                    break
+                    if menu_caisse(caisse_id, magasin_id) == False:
+                        break
                 else:
                     print("Magasin invalide.")
             else:
                 print("Choix invalide.")
         except ValueError:
             print("Entrée invalide.")
+
+
 
 if __name__ == "__main__":
     print("Bienvenue dans le système de caisse.")

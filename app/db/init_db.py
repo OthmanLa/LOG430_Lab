@@ -9,10 +9,7 @@ def init_db():
 
     db = SessionLocal()
 
-    # Vérifie si les magasins existent déjà
     if not db.query(magasin.Magasin).first():
-        # Création de 5 magasins
-       # Création de 5 magasins + centre logistique
         noms_magasins = [
             "Magasin Centre-Ville",
             "Magasin Quartier-Nord",
@@ -26,15 +23,12 @@ def init_db():
         db.add_all(magasins)
         db.commit()
 
-        # Création de 2 produits de test
-        # Nouveau (modèle à jour)
         produit1 = produit.Produit(nom="Chocolat", prix=3.99)
         produit2 = produit.Produit(nom="Pain", prix=2.49)
 
         db.add_all([produit1, produit2])
         db.commit()
 
-        # Ajout du stock pour chaque magasin et produit
         for m in magasins[:-1]:
             db.add_all([
                 stock.Stock(magasin_id=m.id, produit_id=produit1.id, quantite=100),
