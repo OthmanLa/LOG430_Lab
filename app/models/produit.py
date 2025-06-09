@@ -7,7 +7,6 @@ class Produit(Base):
     id = Column(Integer, primary_key=True)
     nom = Column(String, nullable=False)
     prix = Column(Float, nullable=False)
-    quantite = Column(Integer, nullable=False)
 
     def __repr__(self):
-        return f"<Produit(nom='{self.nom}', prix={self.prix}, quantite={self.quantite})>"
+        return f"<Produit(nom='{self.nom}', prix={self.prix})>"

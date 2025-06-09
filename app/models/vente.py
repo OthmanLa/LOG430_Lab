@@ -11,6 +11,8 @@ class Vente(Base):
     total = Column(Float)
     lignes = relationship("LigneVente", back_populates="vente")
     caisse_id = Column(Integer, nullable=False)
+    magasin_id = Column(Integer, ForeignKey('magasins.id'))  
+    magasin = relationship("Magasin")                        
 
 
 class LigneVente(Base):
@@ -24,3 +26,4 @@ class LigneVente(Base):
 
 
     vente = relationship("Vente", back_populates="lignes")
+    produit = relationship("Produit")
