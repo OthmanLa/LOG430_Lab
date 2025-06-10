@@ -1,4 +1,4 @@
-	## Décision
+Lab 1:	## Décision
 	Le système utilisera une base de données relationnelle SQLite, accédée via SQLAlchemy.
 	
 	## Justification
@@ -9,3 +9,15 @@
 	## Conséquences
 	- La base sera un simple fichier .db, monté dans un volume Docker si nécessaire.
     - Le système reste local, simple et autonome.
+Lab 2:  ADR 1
+	Pour ce projet, le choix de conserver SQLite comme moteur de base de données a été motivé par sa simplicité d’utilisation et 
+	son adéquation au contexte pédagogique. SQLite ne nécessite aucune configuration serveur, ce qui facilite les tests et la portabilité 
+	entre les machines des étudiants. De plus, son intégration fluide avec SQLAlchemy permet de créer et gérer facilement la base 
+	de données à l’aide de scripts Python. Dans le cadre d’un système simulé multi-magasin, les performances offertes par SQLite 
+	restent largement suffisantes.
+	ADR 2
+	Par ailleurs, pour répondre aux exigences de gestion de stock par magasin, j’ai introduit une entité Stock distincte.
+	Celle-ci associe un produit à un magasin avec une quantité donnée, ce qui remplace le champ quantité précédemment intégré 
+	directement dans Produit. Cette décision structurelle permet une gestion granulaire des inventaires, rend possible le suivi des 
+	réapprovisionnements par magasin, et s’aligne avec les principes du Domain-Driven Design en séparant clairement les responsabilités 
+	liées à la logistique.
