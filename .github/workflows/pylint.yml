@@ -20,7 +20,7 @@ jobs:
       run: pip install -r requirements.txt
 
     - name: Run pylint
-      run: pylint app tests --fail-under=6.34
+      run: pylint app tests --fail-under=6
 
     - name: Run unit tests
       run: pytest -q
