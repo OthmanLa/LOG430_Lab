@@ -47,3 +47,35 @@ def afficher_tableau_de_bord():
 
     finally:
         session.close()
+
+def get_dashboard_metrics() -> dict:
+    """
+    Retourne les indicateurs clés :
+    - total_ventes : somme de toutes les ventes
+    - sous_total_ventes : nombre total de ventes
+    - stock_faible : liste des stocks < 10 unités
+    """
+    session = SessionLocal()
+    try:
+        total_ventes = session.query(func.sum(Vente.total)).scalar() or 0
+        sous_total_ventes = session.query(func.count(Vente.id)).scalar() or 0
+        low_stock = (
+            session.query(
+                Stock.magasin_id,
+                Stock.produit_id,
+                Stock.quantite
+            )
+            .filter(Stock.quantite < 10)
+            .all()
+        )
+        stock_alerts = [
+            {"magasin_id": m_id, "produit_id": p_id, "quantite": qty}
+            for m_id, p_id, qty in low_stock
+        ]
+        return {
+            "total_ventes": float(total_ventes),
+            "sous_total_ventes": sous_total_ventes,
+            "stock_faible": stock_alerts
+        }
+    finally:
+        session.close()

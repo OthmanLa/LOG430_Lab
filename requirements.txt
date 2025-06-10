@@ -1,3 +1,7 @@
 pytest
 pylint
+fastapi
+uvicorn
 sqlalchemy
+python-multipart
+httpx

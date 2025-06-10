@@ -94,3 +94,20 @@ def ajouter_produit_centre():
         print(" Erreur :", e)
     finally:
         session.close()
+
+def update_product_api(product_id: int, name: str, price: float) -> dict:
+    """
+    Met à jour un produit existant et renvoie ses nouvelles données.
+    """
+    session = SessionLocal()
+    try:
+        prod = session.query(Produit).get(product_id)
+        if not prod:
+            raise ValueError("Produit non trouvé")
+        prod.nom = name
+        prod.prix = price
+        session.commit()
+        session.refresh(prod)
+        return {"id": prod.id, "nom": prod.nom, "prix": prod.prix}
+    finally:
+        session.close()

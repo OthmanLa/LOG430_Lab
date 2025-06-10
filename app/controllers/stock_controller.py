@@ -89,5 +89,26 @@ def demander_reapprovisionnement(magasin_id, produit_id, quantite):
     finally:
         session.close()
 
+def get_stock_by_store(store_id: int):
+    """
+    Récupère la liste des produits et quantités pour un magasin donné.
+    Retourne None si le magasin n'existe pas, sinon une liste de dicts.
+    """
+    session = SessionLocal()
+    try:
+        stocks = session.query(Stock).filter(Stock.magasin_id == store_id).all()
+        if not stocks:
+            return []  
+        result = []
+        for s in stocks:
+            prod = session.query(Produit).get(s.produit_id)
+            result.append({
+                "produit_id":   s.produit_id,
+                "produit_nom":  prod.nom if prod else None,
+                "quantite":     s.quantite
+            })
+        return result
+    finally:
+        session.close()
 
 
