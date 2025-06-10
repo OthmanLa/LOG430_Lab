@@ -1,10 +1,10 @@
 Vue logique:
 
-![image](https://github.com/user-attachments/assets/f24cdade-ab62-4a4f-95e2-7b0ea8670a95)
+  ![image](https://github.com/user-attachments/assets/f24cdade-ab62-4a4f-95e2-7b0ea8670a95)
 
 Vue des processus:
 
-  <img width="593" alt="image" src="https://github.com/user-attachments/assets/c7bd0382-f3b9-44c6-b548-e22cfd0eca18" />
+  ![image](https://github.com/user-attachments/assets/69ab2e47-89ea-4ac6-943a-d918cede66b0)
 
 Vue de déploiement:
 
