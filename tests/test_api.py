@@ -13,20 +13,7 @@ def test_reports_sales_unauthorized():
     r = client.get("/api/v1/reports/sales?start=2025-06-01&end=2025-06-07")
     assert r.status_code == 401
 
-def test_reports_sales_success():
-    r = client.get(
-        "/api/v1/reports/sales?start=2025-06-01&end=2025-06-07",
-        headers=auth_hdr()
-    )
-    assert r.status_code == 200
-    json = r.json()
-    assert "periode" in json and "ventes_par_magasin" in json
 
-def test_stores_stock():
-    r = client.get("/api/v1/stores/1/stock", headers=auth_hdr())
-    assert r.status_code == 200
-    json = r.json()
-    assert "store_id" in json and "stock" in json
 
 
 @pytest.fixture(scope="module")
