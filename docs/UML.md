@@ -1,6 +1,6 @@
 Vue logique:
 
-<img width="162" alt="image" src="https://github.com/user-attachments/assets/a076140c-06e5-4a05-baee-7420861ef4da" />
+![image](https://github.com/user-attachments/assets/f24cdade-ab62-4a4f-95e2-7b0ea8670a95)
 
 Vue des processus:
 
