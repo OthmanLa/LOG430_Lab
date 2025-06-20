@@ -21,7 +21,9 @@ export let options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8001/api/v1';
+//const BASE_URL = 'http://127.0.0.1:8001/api/v1';
+const BASE_URL = 'http://127.0.0.1:8080/api/v1';
+
 const AUTH = { headers: { 'Authorization': 'token1', 'Content-Type': 'application/json' } };
 
 export default function () {

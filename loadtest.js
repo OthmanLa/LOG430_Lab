@@ -17,7 +17,11 @@ export let options = {
   },
 };
 
-const BASE_URL = 'http://127.0.0.1:8001/api/v1';
+//const BASE_URL = 'http://127.0.0.1:8001/api/v1';
+//const BASE_URL = 'http://127.0.0.1:8080/api/v1';
+const BASE_URL = 'http://127.0.0.1:8080/api/v1';
+
+
 const AUTH = {
   headers: {
     // ** Choisis la ligne qui correspond à ton API ** 
@@ -40,7 +44,7 @@ export default function () {
   check(r2, { 'report 200': r => r.status === 200 }) || errorRate.add(1);
 
   // 3) dashboard
-  let r3 = http.get(`${BASE_URL}/dashboard`, AUTH);
+  let r3 = http.get(`${BASE_URL}/dashboard/`, AUTH);
   check(r3, { 'dashboard 200': r => r.status === 200 }) || errorRate.add(1);
 
   sleep(1);

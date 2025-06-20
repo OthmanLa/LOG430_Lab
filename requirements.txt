@@ -5,3 +5,5 @@ uvicorn
 sqlalchemy
 python-multipart
 httpx
+python-json-logger
+prometheus-fastapi-instrumentator

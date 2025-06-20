@@ -5,6 +5,7 @@ from pydantic import BaseModel, Field
 from typing import List
 from fastapi.security import APIKeyHeader
 from fastapi import Security
+from app.cache import reports_cache
 from app.controllers.rapport_controller import generate_sales_report
 
 API_KEY_HEADER_NAME = "Authorization"
@@ -33,6 +34,10 @@ class SalesReport(BaseModel):
     periode: ReportPeriod
     ventes_par_magasin: List[SalesByStore]
 
+@reports_cache
+def _fetch_sales_report(start: date, end: date):
+    return generate_sales_report(start, end)
+
 @router.get(
     "/sales",
     response_model=SalesReport,
@@ -53,7 +58,7 @@ def sales_report(
     Retourne un JSON structuré du rapport de ventes.
     """
     try:
-        return generate_sales_report(start, end)
+        return _fetch_sales_report(start, end)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception:
