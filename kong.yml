@@ -1,0 +1,96 @@
+_format_version: "3.0"
+
+upstreams:
+  - name: produits-upstream
+    algorithm: round-robin
+    targets:
+      - target: produits-service-1:8000
+      - target: produits-service-2:8000
+
+services:
+  - name: produits-service
+    url: http://produits-upstream/api/v1/products
+    routes:
+      - name: produits-route
+        paths:
+          - /produits
+        strip_path: true
+        methods:
+          - GET
+          - PUT
+    plugins:
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "Authorization: token1"
+      - name: cors 
+        config: 
+          origins:
+            - http://localhost:3000
+          methods: 
+            - GET
+            - PUT
+          headers: 
+            - Authorization
+            - Content-Type
+            - apikey
+          exposed_headers: 
+            - Authorization
+          credentials: true
+
+
+  - name: stock-service
+    url: http://stock-service:8000/api/v1/stocks
+    routes:
+      - name: stock-route
+        paths:
+          - /stocks
+        strip_path: true
+        methods:
+          - GET
+
+  - name: client-service
+    url: http://client-service:8000/api/v1/clients
+    routes:
+      - name: client-route
+        paths:
+          - /clients
+        strip_path: true
+        methods:
+          - GET
+
+  - name: commande-service
+    url: http://commande-service:8000/api/v1/commandes
+    routes:
+      - name: commande-route
+        paths:
+          - /commandes
+        strip_path: true
+        methods:
+          - GET
+
+  - name: panier-service
+    url: http://panier-service:8000/api/v1/paniers
+    routes:
+      - name: panier-route
+        paths:
+          - /paniers
+        strip_path: true
+        methods:
+          - GET
+
+  - name: vente-service
+    url: http://vente-service:8000/api/v1/ventes
+    routes:
+      - name: vente-route
+        paths:
+          - /ventes
+        strip_path: true
+        methods:
+          - GET
+
+consumers:
+  - username: etudiant
+    keyauth_credentials:
+      - key: token1
