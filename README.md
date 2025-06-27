@@ -1,6 +1,21 @@
 
 1. Architecture du projet
 LOG430_Lab/
+├── microservice/
+│   ├── client-service/
+│   ├── commande-service/
+│   ├── panier-service/
+│   ├── stock-service/
+│   ├── vente-service/
+│   ├── produits-service/
+│     ├── app/
+       ├── routes/
+       ├── controllers/
+       ├── db/
+       ├── model/ 
+│    ├── Dockerfile/       
+│    ├── main.py/                
+│    └── requirements.txt/
 ├── app/
 │   ├── __init__.py
 │   ├── main.py
@@ -15,39 +30,60 @@ LOG430_Lab/
 │   └── test_api.py        
 ├── Dockerfile
 ├── docker-compose.yml
+...
 ├── requirements.txt
 └── .github/
     └── workflows/
         └── ci.yaml
    
-3. Mise en route pas à pas
-   2.1 Cloner le projet
-     git clone https://github.com/OthmanLa/LOG430_Lab.git
-      cd LOG430_Lab
-   2.2 Lancer le conteneur avec Docker Compose et le cli
-        docker-compose build
-        docker compose run --rm app python -m app.main
-    Cela démarre l'application en console :
-        Ajouter un produit
-        Rechercher un produit
-        Enregistrer une vente ....
-   2.3 Lancer les tests
-       docker compose down
-       docker compose up --build test
-   2.4 Lancer l'api et acceder au swagger
-       docker compose down
-       docker compose up --build
-       Swagger UI : http://localhost:8000/docs
-       Redoc: http://localhost:8000/redoc
+Mise en route pas à pas
+    1. Cloner le projet
+    Ouvrir un terminal et exécuter :
+    git clone https://github.com/OthmanLa/LOG430_Lab.git
+    cd LOG430_Lab
+    2. Lancer l’environnement complet
+    Le fichier docker-compose.yml orchestre tous les microservices et les outils d’infrastructure (Kong, Prometheus, Grafana). Pour tout démarrer :
+    docker compose up -d
+    
+    
+    Accès aux microservices
+    Chaque microservice expose une interface Swagger UI accessible localement :
+    Microservice	Adresse Swagger UI
+    produits-service-1	http://localhost:8016/docs
+    
+    produits-service-2	http://localhost:8017/docs
+    
+    stock-service	http://localhost:8011/docs
+    
+    client-service	http://localhost:8012/docs
+    
+    commande-service	http://localhost:8013/docs
+    
+    panier-service	http://localhost:8014/docs
+    
+    vente-service	http://localhost:8015/docs
+    
+    
+    Accès via Kong Gateway
+    Tous les services sont également exposés via Kong Gateway à l’adresse http://localhost:8000, avec les routes suivantes :
+    •	Produits : http://localhost:8000/api/v1/products
+    •	Stock : http://localhost:8000/api/v1/stocks
+    •	Clients, commandes, panier, ventes… disponibles sous /api/v1/...
+    
+    Observabilité
+    •	Prometheus : http://localhost:9090
+    •	Grafana : http://localhost:3000
+    Identifiants par défaut : admin / admin
+    Les métriques de chaque microservice sont disponibles via /metrics et agrégées dans Prometheus, visualisées dans Grafana.
+    
+    Arrêt et nettoyage
+    Pour arrêter tous les conteneurs :
+    docker compose down
+    
+    Lancer manuellement une image
+    Pour lancer un conteneur manuellement :
+    docker run --rm othman157/log430_lab:latest
 
-     docker compose down
-   Ps: le docker-compose.yml pointe déjà vers othman157/log430_lab:latest. Un simple docker compose up -d suffit.
-   docker run --rm othman157/log430_lab:latest
-
-5. Pipeline CI/CD
-   
-   <img width="650" alt="image" src="https://github.com/user-attachments/assets/d648a4de-3326-4e2d-9c38-840e87db22e7" />
-   <img width="647" alt="image" src="https://github.com/user-attachments/assets/69dd34fd-ea16-4ca3-badd-10fcdc351110" />
 
    
 
