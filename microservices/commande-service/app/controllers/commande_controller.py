@@ -5,10 +5,11 @@ from typing import List
 from app.db.session import SessionLocal
 from app.model.commande import Commande, LigneCommande
 
+# ==== URLs externes ====
 STOCK_SERVICE_URL = "http://stock-service:8000"
-HEADERS = {"Authorization": "token1"}
-
 PRODUIT_SERVICE_URL = "http://produits-service:8000/api/v1/products"
+CLIENT_SERVICE_URL = "http://client-service:8000/clients"
+
 HEADERS = {"Authorization": "token1"}
 
 # ==== Modèles ====
@@ -18,10 +19,20 @@ class LigneCommandeRequest(BaseModel):
 
 class CommandeRequest(BaseModel):
     client_id: int
-    magasin_id: int  # 🔥 Utilisé partout
+    magasin_id: int
     lignes: List[LigneCommandeRequest]
 
-# ==== Vérification ====
+# ==== Vérifications ====
+def verifier_client_existe(client_id: int) -> bool:
+    try:
+        response = requests.get(CLIENT_SERVICE_URL)
+        if response.status_code != 200:
+            return False
+        clients = response.json()
+        return any(client["id"] == client_id for client in clients)
+    except Exception:
+        return False
+
 def verifier_stock(product_id: int, quantite: int, magasin_id: int) -> bool:
     try:
         response = requests.get(
@@ -59,12 +70,16 @@ def rollback_stock(product_id: int, quantite: int, magasin_id: int):
         pass
 
 def effectuer_paiement(client_id: int, montant: float) -> bool:
-    return True  # Simulé
+    return True  # Simulation
 
 # ==== Création de commande ====
 def creer_commande(commande: CommandeRequest):
     db = SessionLocal()
     try:
+        # 🔒 Vérification client
+        if not verifier_client_existe(commande.client_id):
+            raise HTTPException(status_code=404, detail="Client non trouvé")
+
         for ligne in commande.lignes:
             if not verifier_stock(ligne.product_id, ligne.quantite, commande.magasin_id):
                 raise HTTPException(status_code=400, detail=f"Stock insuffisant pour produit {ligne.product_id}")
@@ -78,7 +93,6 @@ def creer_commande(commande: CommandeRequest):
                 rollback_stock(ligne.product_id, ligne.quantite, commande.magasin_id)
             raise HTTPException(status_code=402, detail="Paiement refusé. Stock annulé.")
 
-        # ✅ Enregistrement avec magasin_id
         nouvelle_commande = Commande(client_id=commande.client_id, magasin_id=commande.magasin_id)
         db.add(nouvelle_commande)
         db.commit()
@@ -119,7 +133,6 @@ def get_commandes():
             lignes_data = []
 
             for l in c.lignes:
-                # 🔄 Récupérer le prix du produit depuis le service produit
                 try:
                     response = requests.get(f"{PRODUIT_SERVICE_URL}/{l.product_id}", headers=HEADERS)
                     if response.status_code != 200:
@@ -127,7 +140,7 @@ def get_commandes():
                     produit_data = response.json()
                     prix = produit_data["prix"]
                 except:
-                    prix = 0  # fallback
+                    prix = 0
 
                 montant = prix * l.quantite
                 total += montant
