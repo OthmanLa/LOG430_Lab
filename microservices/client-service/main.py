@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from app.routes import clients
-from prometheus_fastapi_instrumentator import Instrumentator
+from app.init_db import init_db
 
-app = FastAPI(title="Clients Service")
-app.include_router(clients.router, prefix="/api/v1")
+app = FastAPI(title="Client Service")
 
-Instrumentator().instrument(app).expose(app)
+init_db()
+app.include_router(clients.router)

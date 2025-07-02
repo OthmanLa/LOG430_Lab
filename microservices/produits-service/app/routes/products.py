@@ -7,6 +7,7 @@ from fastapi import Request
 from app.controllers.produit_controller import update_product_api
 from app.controllers.produit_controller import get_all_products_api
 from app.controllers.produit_controller import get_product_by_id_api
+from app.controllers.produit_controller import create_product_api
 
 API_KEY_HEADER_NAME = "Authorization"
 API_KEY = "token1"
@@ -52,5 +53,12 @@ def get_product(product_id: int, request: Request):
         return get_product_by_id_api(product_id)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+@router.post("/products", response_model=ProductOut, status_code=201)
+def create_product(payload: ProductIn):
+    try:
+        return create_product_api(payload.nom, payload.prix)
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -32,3 +32,14 @@ def get_product_by_id_api(product_id: int):
         return produit
     finally:
         db.close()
+
+def create_product_api(nom: str, prix: float):
+    db = SessionLocal()
+    try:
+        produit = Produit(nom=nom, prix=prix)
+        db.add(produit)
+        db.commit()
+        db.refresh(produit)
+        return produit
+    finally:
+        db.close()

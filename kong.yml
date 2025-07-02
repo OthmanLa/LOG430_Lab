@@ -89,7 +89,38 @@ services:
         strip_path: true
         methods:
           - GET
-
+  - name: centrelogistique-service
+    url: http://centrelogistique-service:8000/api/v1
+    routes:
+      - name: centrelogistique-route
+        paths:
+          - /centrelogistique
+        strip_path: true
+        methods:
+          - POST
+          - PUT
+          - GET
+    plugins:
+      - name: request-transformer
+        config:
+          add:
+            headers:
+              - "Authorization: token1"
+      - name: cors 
+        config: 
+          origins:
+            - http://localhost:3000
+          methods: 
+            - GET
+            - POST
+            - PUT
+          headers: 
+            - Authorization
+            - Content-Type
+            - apikey
+          exposed_headers: 
+            - Authorization
+          credentials: true
 consumers:
   - username: etudiant
     keyauth_credentials:

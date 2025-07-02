@@ -1,25 +1,25 @@
 version: '3.9'
 
 services:
-  produits-service-1:
+  produits-service:
     build:
       context: ./microservices/produits-service
-    container_name: produits-service-1
+    container_name: produits-service
     volumes:
       - ./microservices/produits-service/app:/app/app
     ports:
-      - "8016:8000"
+      - "8010:8000"
     restart: always
 
-  produits-service-2:
-    build:
-      context: ./microservices/produits-service
-    container_name: produits-service-2
-    volumes:
-      - ./microservices/produits-service/app:/app/app
-    ports:
-      - "8017:8000"
-    restart: always
+  # produits-service-2:
+  #   build:
+  #     context: ./microservices/produits-service
+  #   container_name: produits-service-2
+  #   volumes:
+  #     - ./microservices/produits-service/app:/app/app
+  #   ports:
+  #     - "8017:8000"
+  #   restart: always
 
   stock-service:
     build:
@@ -69,6 +69,16 @@ services:
       - ./microservices/vente-service/app:/app/app
     ports:
       - "8015:8000"
+    restart: always
+
+  centrelogistique-service:
+    build:
+      context: ./microservices/centrelogistique-service
+    container_name: centrelogistique-service
+    volumes:
+      - ./microservices/centrelogistique-service/app:/app/app
+    ports:
+      - "8016:8000"
     restart: always
 
   kong:
