@@ -76,7 +76,6 @@ def effectuer_paiement(client_id: int, montant: float) -> bool:
 def creer_commande(commande: CommandeRequest):
     db = SessionLocal()
     try:
-        # 🔒 Vérification client
         if not verifier_client_existe(commande.client_id):
             raise HTTPException(status_code=404, detail="Client non trouvé")
 
@@ -88,12 +87,30 @@ def creer_commande(commande: CommandeRequest):
             if not reserver_stock(ligne.product_id, ligne.quantite, commande.magasin_id):
                 raise HTTPException(status_code=500, detail=f"Réservation échouée pour produit {ligne.product_id}")
 
-        if not effectuer_paiement(commande.client_id, montant=0):
+        # 💰 Calculer le montant total de la commande
+        montant_total = 0
+        for ligne in commande.lignes:
+            try:
+                response = requests.get(f"{PRODUIT_SERVICE_URL}/{ligne.product_id}", headers=HEADERS)
+                if response.status_code != 200:
+                    raise Exception("Erreur produit")
+                produit_data = response.json()
+                prix = produit_data["prix"]
+            except:
+                prix = 0
+            montant_total += prix * ligne.quantite
+
+        # ✅ Ici on passe le bon montant
+        if not effectuer_paiement(commande.client_id, montant=montant_total):
             for ligne in commande.lignes:
                 rollback_stock(ligne.product_id, ligne.quantite, commande.magasin_id)
             raise HTTPException(status_code=402, detail="Paiement refusé. Stock annulé.")
 
-        nouvelle_commande = Commande(client_id=commande.client_id, magasin_id=commande.magasin_id)
+        nouvelle_commande = Commande(
+            client_id=commande.client_id,
+            magasin_id=commande.magasin_id,
+            montant=montant_total
+        )
         db.add(nouvelle_commande)
         db.commit()
         db.refresh(nouvelle_commande)
@@ -110,7 +127,8 @@ def creer_commande(commande: CommandeRequest):
 
         return {
             "message": "Commande créée avec succès",
-            "commande_id": nouvelle_commande.id
+            "commande_id": nouvelle_commande.id,
+            "montant": montant_total
         }
 
     except HTTPException as e:
@@ -129,7 +147,6 @@ def get_commandes():
         commandes = db.query(Commande).all()
         result = []
         for c in commandes:
-            total = 0
             lignes_data = []
 
             for l in c.lignes:
@@ -143,7 +160,6 @@ def get_commandes():
                     prix = 0
 
                 montant = prix * l.quantite
-                total += montant
 
                 lignes_data.append({
                     "product_id": l.product_id,
@@ -157,7 +173,7 @@ def get_commandes():
                 "client_id": c.client_id,
                 "magasin_id": c.magasin_id,
                 "lignes": lignes_data,
-                "total_commande": total
+                "total_commande": c.montant  # ✅ Utilise directement le montant stocké
             })
 
         return result

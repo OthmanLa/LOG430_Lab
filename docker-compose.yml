@@ -61,12 +61,12 @@ services:
       - "8014:8000"
     restart: always
 
-  vente-service:
+  paiement-service:
     build:
-      context: ./microservices/vente-service
-    container_name: vente-service
+      context: ./microservices/paiement-service
+    container_name: paiement-service
     volumes:
-      - ./microservices/vente-service/app:/app/app
+      - ./microservices/paiement-service/app:/app/app
     ports:
       - "8015:8000"
     restart: always

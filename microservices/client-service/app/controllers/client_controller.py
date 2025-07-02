@@ -6,19 +6,20 @@ import requests
 COMMANDE_SERVICE_URL = "http://commande-service:8000/api/v1"
 
 
-def create_client(nom: str, email: str):
+def create_client(nom: str, email: str, solde_initial: float = 100.0):
     db = SessionLocal()
     try:
         existing = db.query(Client).filter(Client.email == email).first()
         if existing:
             raise HTTPException(status_code=400, detail="Client déjà existant")
-        client = Client(nom=nom, email=email)
+        client = Client(nom=nom, email=email, solde=solde_initial)
         db.add(client)
         db.commit()
         db.refresh(client)
         return client
     finally:
         db.close()
+
 
 def get_clients():
     db = SessionLocal()

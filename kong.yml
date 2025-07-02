@@ -80,12 +80,12 @@ services:
         methods:
           - GET
 
-  - name: vente-service
-    url: http://vente-service:8000/api/v1/ventes
+  - name: paiement-service
+    url: http://paiement-service:8000/api/v1/ventes
     routes:
-      - name: vente-route
+      - name: paiement-route
         paths:
-          - /ventes
+          - /paiements
         strip_path: true
         methods:
           - GET

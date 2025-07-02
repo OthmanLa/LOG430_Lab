@@ -1,8 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List
-
+from app.model.commande import Commande
 from app.controllers.commande_controller import creer_commande, get_commandes
+from app.db.session import SessionLocal
 
 router = APIRouter(prefix="/commandes", tags=["Commandes"])
 
@@ -23,3 +24,14 @@ def creer(commande: CommandeRequest):
 @router.get("/")
 def lister_commandes():
     return get_commandes()
+
+@router.get("/commandes/{commande_id}")
+def get_commande_by_id(commande_id: int):
+    db = SessionLocal()
+    try:
+        commande = db.query(Commande).filter(Commande.id == commande_id).first()
+        if not commande:
+            raise HTTPException(status_code=404, detail="Commande introuvable")
+        return commande
+    finally:
+        db.close()

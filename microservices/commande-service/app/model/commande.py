@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, ForeignKey
+from sqlalchemy import Column, Integer, ForeignKey, Float
 from sqlalchemy.orm import relationship
 from app.model.base import Base
 
@@ -8,6 +8,7 @@ class Commande(Base):
     id = Column(Integer, primary_key=True, index=True)
     client_id = Column(Integer, nullable=False)
     magasin_id = Column(Integer, nullable=False)  # 🆕 Magasin associé à la commande
+    montant = Column(Float, nullable=False)
 
     lignes = relationship("LigneCommande", back_populates="commande")
 
