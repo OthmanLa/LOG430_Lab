@@ -2,30 +2,37 @@ global:
   scrape_interval: 15s
 
 scrape_configs:
-  - job_name: 'produits-service-1'
+  - job_name: 'produits-service'
     metrics_path: /metrics
     static_configs:
-      - targets: ['produits-service-1:8000']
-
-  - job_name: 'produits-service-2'
-    metrics_path: /metrics
-    static_configs:
-      - targets: ['produits-service-2:8000']
+      - targets: ['produits-service:8000']
 
   - job_name: 'stock-service'
     metrics_path: /metrics
     static_configs:
       - targets: ['stock-service:8000']
 
-  - job_name: 'vente-service'
+  - job_name: 'paiement-service'
+    metrics_path: /metrics
     static_configs:
-      - targets: ['vente-service:8000']
+      - targets: ['paiement-service:8000']
+
   - job_name: 'client-service'
+    metrics_path: /metrics
     static_configs:
       - targets: ['client-service:8000']
+
   - job_name: 'commande-service'
+    metrics_path: /metrics
     static_configs:
       - targets: ['commande-service:8000']
+
   - job_name: 'panier-service'
+    metrics_path: /metrics
     static_configs:
       - targets: ['panier-service:8000']
+
+  - job_name: 'orchestrateur-service'
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['orchestrateur-service:8000']

@@ -121,6 +121,30 @@ services:
           exposed_headers: 
             - Authorization
           credentials: true
+
+  - name: orchestrateur-service
+    url: http://orchestrateur-service:8000/api/v1/orchestration
+    routes:
+      - name: orchestrateur-route
+        paths:
+          - /orchestrateur
+        strip_path: true
+        methods:
+          - POST
+    plugins:
+      - name: cors
+        config:
+          origins:
+            - http://localhost:3000
+          methods:
+            - POST
+          headers:
+            - Authorization
+            - Content-Type
+          exposed_headers:
+            - Authorization
+          credentials: true
+          
 consumers:
   - username: etudiant
     keyauth_credentials:
