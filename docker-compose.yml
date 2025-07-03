@@ -81,6 +81,21 @@ services:
       - "8016:8000"
     restart: always
 
+  orchestrateur-service:
+    build:
+      context: ./microservices/orchestrateur-service
+    container_name: orchestrateur-service
+    volumes:
+      - ./microservices/orchestrateur-service/app:/app/app
+    ports:
+      - "8018:8000"  # Choisis un port libre
+    restart: always
+    depends_on:
+      - client-service
+      - commande-service
+      - stock-service
+      - paiement-service
+
   kong:
     image: kong:3.6
     container_name: kong
