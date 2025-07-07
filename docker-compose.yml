@@ -95,6 +95,66 @@ services:
       - commande-service
       - stock-service
       - paiement-service
+  
+  audit-service:
+    build:
+      context: ./microservices/audit-service
+    container_name: audit-service
+    volumes:
+      - ./microservices/audit-service:/app
+    depends_on:
+      - rabbitmq
+    ports:
+      - "9002:9002"
+
+  notification-service:
+    build:
+      context: ./microservices/notification-service
+    container_name: notification-service
+    volumes:
+      - ./microservices/notification-service:/app
+    depends_on:
+      - rabbitmq
+    ports:
+      - "9001:9001"
+
+  event-store-api:
+    build:
+      context: ./microservices/event-store-service
+    container_name: event-store-api
+    ports:
+      - "8020:8000"
+    volumes:
+      - ./microservices/event-store-service:/app
+    command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+    depends_on:
+      - rabbitmq
+
+  event-store-consumer:
+    build:
+      context: ./microservices/event-store-service
+    container_name: event-store-consumer
+    volumes:
+      - ./microservices/event-store-service:/app
+    environment:
+      - PYTHONPATH=/app
+    command: ["python", "app/consumer.py"]
+    depends_on:
+      - rabbitmq
+    ports:
+      - "9003:9003"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # Port AMQP pour les services
+      - "15672:15672"  # Interface Web
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - default
 
   kong:
     image: kong:3.6

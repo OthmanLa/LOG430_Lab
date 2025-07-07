@@ -8,3 +8,4 @@ httpx
 python-json-logger
 prometheus-fastapi-instrumentator
 requests
+pika

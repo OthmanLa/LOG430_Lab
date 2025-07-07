@@ -9,3 +9,4 @@ python-json-logger
 prometheus-fastapi-instrumentator
 requests
 pika
+prometheus-client

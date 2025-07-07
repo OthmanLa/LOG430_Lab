@@ -4,6 +4,7 @@ from pydantic import BaseModel
 from typing import List
 from app.db.session import SessionLocal
 from app.model.commande import Commande, LigneCommande
+from app.event_publisher import publier_commande_creee
 
 # ==== URLs externes ====
 STOCK_SERVICE_URL = "http://stock-service:8000"
@@ -115,6 +116,7 @@ def creer_commande(commande: CommandeRequest):
         db.commit()
         db.refresh(nouvelle_commande)
 
+        # 🟩 Enregistre les lignes dans la base
         for ligne in commande.lignes:
             ligne_commande = LigneCommande(
                 commande_id=nouvelle_commande.id,
@@ -124,6 +126,12 @@ def creer_commande(commande: CommandeRequest):
             db.add(ligne_commande)
 
         db.commit()
+
+        # 🟩 Recharge les vraies lignes depuis la DB
+        lignes_commande = db.query(LigneCommande).filter_by(commande_id=nouvelle_commande.id).all()
+
+        # ✅ Publier l’événement APRÈS avoir tout enregistré
+        publier_commande_creee(nouvelle_commande, lignes_commande)
 
         return {
             "message": "Commande créée avec succès",

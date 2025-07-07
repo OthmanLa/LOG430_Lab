@@ -3,6 +3,7 @@ from fastapi import HTTPException
 from app.db.session import SessionLocal
 from app.model.paiement import Paiement
 from datetime import datetime
+from app.event_publisher import publish_paiement_effectue
 
 CLIENT_SERVICE_URL = "http://client-service:8000/clients/clients"
 COMMANDE_SERVICE_URL = "http://commande-service:8000/api/v1/commandes/commandes"
@@ -55,7 +56,8 @@ def effectuer_paiement(client_id: int, commande_id: int):
         db.add(paiement)
         db.commit()
         db.refresh(paiement)
-
+        publish_paiement_effectue(client_id, commande_id, montant)
+        
         return {
             "message": "✅ Paiement effectué avec succès",
             "paiement": {
