@@ -3,10 +3,11 @@
 LOG430_Lab/
 ├── microservice/
 │   ├── client-service/
+│   ├── centrelogistique-service/
 │   ├── commande-service/
 │   ├── panier-service/
 │   ├── stock-service/
-│   ├── vente-service/
+│   ├── paiement-service/
 │   ├── produits-service/
 │     ├── app/
        ├── routes/
@@ -49,20 +50,17 @@ Mise en route pas à pas
     Accès aux microservices
     Chaque microservice expose une interface Swagger UI accessible localement :
     Microservice	Adresse Swagger UI
-    produits-service-1	http://localhost:8016/docs
-    
-    produits-service-2	http://localhost:8017/docs
+    produits-service	http://localhost:8010/docs
     
     stock-service	http://localhost:8011/docs
     
     client-service	http://localhost:8012/docs
     
     commande-service	http://localhost:8013/docs
-    
-    panier-service	http://localhost:8014/docs
-    
-    vente-service	http://localhost:8015/docs
-    
+        
+    paiement-service	http://localhost:8015/docs
+
+    centrelogistique-service http://localhost:8016/docs
     
     Accès via Kong Gateway
     Tous les services sont également exposés via Kong Gateway à l’adresse http://localhost:8000, avec les routes suivantes :
